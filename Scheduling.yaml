@@ -1,0 +1,35 @@
+Q:- Create a monitoring deployment and ensure its pods run only on node-02. No other pods should run on node-02, and monitoring pods should not run on any other node ?
+Ans:- 
+
+STEP 01:- 
+kubectl taint nodes <NODE-NAME> <KEY>=<VALUES>:NoSchedule
+
+
+STEP 02:- 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: specific-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: specific-app
+  template:
+    metadata:
+      labels:
+        app: specific-app
+    spec:
+      nodeSelector:
+        <KEY>: <VALUES>  # Pod will only be scheduled on nodes with this label
+      tolerations:
+        - key: "KEY"
+          operator: "Equal"
+          value: "VALUES"
+          effect: "NoSchedule"  # Allows the pod to be scheduled on the tainted node
+      containers:
+        - name: example-container
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+
