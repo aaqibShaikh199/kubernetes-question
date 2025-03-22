@@ -1,10 +1,12 @@
 Q:- Create a monitoring deployment and ensure its pods run only on node-02. No other pods should run on node-02, and monitoring pods should not run on any other node ?
 Ans:- 
 
+##########################################################################################
 STEP 01:- 
 kubectl taint nodes <NODE-NAME> <KEY>=<VALUES>:NoSchedule
 
 
+##########################################################################################
 STEP 02:- 
 apiVersion: apps/v1
 kind: Deployment
